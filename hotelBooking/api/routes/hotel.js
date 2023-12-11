@@ -1,5 +1,4 @@
 import express from "express";
-import Hotel from "../models/Hotel.js";
 import { createError } from "../utils/error.js";
 import {
   createHotel,
@@ -8,14 +7,15 @@ import {
   getHotelById,
   updateHotelData,
 } from "../controllers/hotel.controller.js";
+import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/", getAllHotel);
+router.get("/", verifyUser, getAllHotel);
 router.get("/:id", getHotelById);
-router.post("/create", createHotel);
-router.patch("/update/:id", updateHotelData);
-router.patch("/delete/:id", deleteHotel);
+router.post("/create", verifyAdmin, createHotel);
+router.put("/update/:id", verifyAdmin, updateHotelData);
+router.delete("/delete/:id", deleteHotel);
 
 export default router;
 

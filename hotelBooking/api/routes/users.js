@@ -1,9 +1,14 @@
 import express from "express";
 import User from "../models/User.js";
+import { verifyToken, verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/checkauthentication", verifyToken, (req, res, next) => {
+  res.status(200).send("User verified");
+});
+
+router.get("/", verifyUser, (req, res) => {
   res.send("Hello from users");
 });
 
