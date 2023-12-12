@@ -1,20 +1,19 @@
 import express from "express";
-import Room from "../models/Room.js";
+import { verifyAdmin } from "../utils/verifyToken.js";
+import {
+  createRoom,
+  deleteRoom,
+  getAllRooms,
+  getRoom,
+  updateRoom,
+} from "../controllers/room.controller.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("Hello from rooms");
-});
+router.get("/allrooms", getAllRooms);
+// router.get("/:id", getRoom);
+router.post("/:hotelid", verifyAdmin, createRoom);
+router.put("/:id", verifyAdmin, updateRoom);
+router.delete("/:id", verifyAdmin, deleteRoom);
 
-router.post("/create", async (req, res) => {
-  const newRoom = new Room(req.body);
-
-  try {
-    const savedRoom = await newRoom.save();
-    res.status(200).json(savedRoom);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
 export default router;
