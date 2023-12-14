@@ -51,11 +51,10 @@ export const updateHotelData = async (req, res, next) => {
 
 export const deleteHotel = async (req, res, next) => {
   const id = req.params.id;
-  console.log(typeof id);
 
   try {
     const deletedHotel = await Hotel.findByIdAndDelete(id);
-    return res.status(200), json(deletedHotel);
+    return res.status(200).json(deletedHotel);
   } catch (error) {
     next(createError("500", "try later"));
   }

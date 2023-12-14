@@ -1,23 +1,25 @@
-import Room from "../models/Room.js";
 import Hotel from "../models/Hotel.js";
+import Rooms from "../models/Rooms.js";
 import { createError } from "../utils/error.js";
 
 export const createRoom = async (req, res, next) => {
-  const hotelId = req.params.hotelId;
-  const newRoom = new Room(req.body);
+  const hotelId = req.params.HotelId;
+  const newRoom = new Rooms(req.body);
+  console.log(req.body);
 
   try {
-    const createdRoom = await newRoom.save();
+    const savedRoom = await newRoom.save();
     try {
       await Hotel.findByIdAndUpdate(hotelId, {
-        $push: { rooms: createdRoom._id },
+        $push: { rooms: savedRoom._id },
       });
     } catch (error) {
       next(error);
     }
-    return res.status(200).json(createdRoom);
+    return res.status(200).json(savedRoom);
   } catch (error) {
-    return next(createError(500, "something went wrong"));
+    return next(error);
+    // return next(createError(500, "something went wrong"));
   }
 };
 

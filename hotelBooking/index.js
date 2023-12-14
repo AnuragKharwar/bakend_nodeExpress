@@ -1,11 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import routeRoute from "./api/routes/auth.js";
+import routerAuth from "./api/routes/auth.js";
 import routeHotel from "./api/routes/hotel.js";
 import routeUsers from "./api/routes/users.js";
-import routeRooms from "./api/routes/rooms.js";
+import routeRooms from "./api/routes/room.js";
 import CookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+
 dotenv.config();
 
 const app = express();
@@ -29,10 +31,10 @@ mongoose.connection.on("disconnected", () => {
 app.use(CookieParser());
 app.use(express.json());
 
-app.use("/api/auth", routeRoute);
+app.use("/api/auth", routerAuth);
 app.use("/api/hotel", routeHotel);
 app.use("/api/user", routeUsers);
-app.use("/api/rooms", routeRooms);
+app.use("/api/room", routeRooms);
 
 // for error handling middleware
 app.use((err, req, res, next) => {
